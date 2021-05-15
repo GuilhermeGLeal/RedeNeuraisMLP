@@ -18,6 +18,7 @@ public class Arquivo {
 
     public Arquivo(String path) {
 
+        System.out.println(path);
         try {
             csvReader = new BufferedReader(new FileReader(path));
         } catch (IOException ex) {
@@ -60,15 +61,49 @@ public class Arquivo {
     }
 
     public void lerArquivo() {
-
+        
         String row;
-
+        String[][] data = new String[1500][1500];
+        String [] atributos = new String[790];
+        String classe = "";
+        LinhaCSV linha;
+        double valor;
+        int j = 0;
         try {
 
+            row = csvReader.readLine();
+            atributos = row.split(",");
+                    
             while ((row = csvReader.readLine()) != null) {
-                String[] data = row.split(",");
+               
+                data[j] = row.split(",");
+                classe = data[j][data[j].length-1];
+               
+                linha = new LinhaCSV(classe);
+                
+                for (int i = 0; i < data[j].length-1; i++) {
+                    
+                    valor = Double.parseDouble(data[j][i]);
+                   linha.setAtributo(atributos[i], valor);
+                }
+                                
+                linhas.add(linha);
+                
+                j++;
             }
 
+            /*
+            for (int i = 0; i < linhas.size(); i++) {
+                
+                System.out.println(linhas.get(i).getValorclasse());
+                
+                for (int k = 0; k < linhas.get(i).getAtributos().size(); k++) {
+                    
+                     System.out.println(linhas.get(i).getAtributos().get(k).getValor());
+                    System.out.println(linhas.get(i).getAtributos().get(k).getNome());
+                }
+            }*/
+            
             csvReader.close();
 
         } catch (IOException ex) {

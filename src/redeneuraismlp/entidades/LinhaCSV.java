@@ -1,17 +1,17 @@
 
 package redeneuraismlp.entidades;
 
+import java.util.ArrayList;
 import java.util.List;
-
 
 public class LinhaCSV {
   
     private String valorclasse;
     private List<Atributo> atributos;
 
-    public LinhaCSV(String valorclasse, List<Atributo> atributos) {
-        this.valorclasse = valorclasse;
-        this.atributos = atributos;
+    public LinhaCSV(String valorclasse) {
+        this.valorclasse = valorclasse; 
+        this.atributos = new ArrayList();
     }
 
     public String getValorclasse() {
@@ -25,9 +25,10 @@ public class LinhaCSV {
     public List<Atributo> getAtributos() {
         return atributos;
     }
-
-    public void setAtributos(List<Atributo> atributos) {
-        this.atributos = atributos;
+    
+    public void setAtributo(String nome, double valor){
+        
+        this.atributos.add(new Atributo(nome, valor));
     }
 
 
