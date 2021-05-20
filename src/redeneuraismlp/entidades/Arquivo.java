@@ -52,12 +52,35 @@ public class Arquivo {
         return hiddenLayer;
     }
 
-    public void setHiddenLayer(int hiddenLayer) {
-        this.hiddenLayer = hiddenLayer;
+    public List<LinhaCSV> getLinhas() {
+        return linhas;
     }
 
+    
     private void normalizar() {
-        // após ler normalizar
+       
+       double valorAntigo, novoValor;
+        List<Atributo> listAux;
+        
+        for (int i = 0; i < normalizacaos.size(); i++) {
+            
+            normalizacaos.get(i).setIntervalo();
+        }
+        
+        for (int i = 0; i < linhas.size(); i++) {
+            
+            listAux = linhas.get(i).getAtributos();
+            
+            for (int j = 0; j < listAux.size(); j++) {
+                        
+                // novo valor = (valor antigo - menor valor)/ intervalo
+                valorAntigo = listAux.get(j).getValor();                
+                novoValor = (valorAntigo - normalizacaos.get(j).getMenorValor()) / normalizacaos.get(j).getIntervalo();
+                
+                //System.out.println(novoValor + listAux.get(j).getNome());
+                listAux.get(j).setValor(novoValor);
+            }
+        }
     }
 
     public void lerArquivo() {
@@ -69,11 +92,31 @@ public class Arquivo {
         LinhaCSV linha;
         double valor;
         int j = 0;
+        int qtdClasses = 0;
+        String classeAnt = "";
+        
         try {
 
             row = csvReader.readLine();
             atributos = row.split(",");
+            normalizacaos = new ArrayList();            
+            
+            for (int i = 0; i < atributos.length; i++) {
+                
+                if(atributos[i] != "" && !atributos[i].equals("classe")){
                     
+                    normalizacaos.add(new Normalizacao(atributos[i], 0, 0));
+                }
+            }
+            
+            inputLayer = normalizacaos.size();
+            /*
+            for (int i = 0; i < normalizacaos.size(); i++) {
+                
+                System.out.println(normalizacaos.get(i).getAtributo());
+            }*/
+            
+            
             while ((row = csvReader.readLine()) != null) {
                
                 data[j] = row.split(",");
@@ -81,10 +124,27 @@ public class Arquivo {
                
                 linha = new LinhaCSV(classe);
                 
-                for (int i = 0; i < data[j].length-1; i++) {
-                    
-                    valor = Double.parseDouble(data[j][i]);
-                   linha.setAtributo(atributos[i], valor);
+                for (int i = 0; i < data[j].length; i++) {
+
+                    if (i != data[j].length-1) {
+                        valor = Double.parseDouble(data[j][i]);
+                        linha.setAtributo(atributos[i], valor);
+
+                        if (valor < normalizacaos.get(i).getMenorValor()) {
+                            normalizacaos.get(i).setMenorValor(valor);
+                        } else if (valor > normalizacaos.get(i).getMaiorValor()) {
+                            normalizacaos.get(i).setMaiorValor(valor);
+                        }
+                    }
+                    else{
+                        
+                        if(classeAnt.equals("") || !classeAnt.equals(data[j][i])){
+                            
+                            qtdClasses++;
+                            classeAnt = data[j][i];
+                        }
+                    }
+
                 }
                                 
                 linhas.add(linha);
@@ -108,6 +168,10 @@ public class Arquivo {
 
         } catch (IOException ex) {
         }
+        
+        outputLayer = qtdClasses;
+        this.hiddenLayer = (inputLayer + outputLayer) / 2;
+        normalizar();
 
     }
 

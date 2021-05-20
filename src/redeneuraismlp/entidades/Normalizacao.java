@@ -44,8 +44,8 @@ public class Normalizacao {
         return intervalo;
     }
 
-    public void setIntervalo(double intervalo) {
-        this.intervalo = intervalo;
+    public void setIntervalo() {
+        this.intervalo = maiorValor - menorValor;
     }
     
     
