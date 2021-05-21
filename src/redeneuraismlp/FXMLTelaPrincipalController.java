@@ -204,6 +204,13 @@ public class FXMLTelaPrincipalController implements Initializable {
     @FXML
     private void aplicar_algoritmo(ActionEvent event) {
         
+        int camadaOculta;     
+        double valorErro; 
+        int numeroMax;
+        double taxaAprend; 
+        int funcao;
+        
+        
         if(!validaInt(txfCamadaOculta.getText(), "Camada Oculta")){
             
             if(!validaDouble(txfValorErro.getText(), "Campo Erro")){
@@ -212,6 +219,15 @@ public class FXMLTelaPrincipalController implements Initializable {
                     
                     if(!validaDouble(txfTaxaAprend.getText(), "Taxa de aprendizagem")){
                         
+                    camadaOculta = Integer.parseInt(txfCamadaOculta.getText());                       
+                        numeroMax = Integer.parseInt(txfNumeroMaximo.getText());
+                        funcao = ckbLinear.isSelected() ? 1 : ckbLogis.isSelected() ? 2 : 3;
+                        
+                        valorErro = Double.parseDouble(txfValorErro.getText());
+                        taxaAprend = Double.parseDouble(txfTaxaAprend.getText());
+                        
+                        //System.out.println(funcao);
+                        control.chamarAlgoritmo(camadaOculta, valorErro, numeroMax,taxaAprend, funcao, ckbisTeste.isSelected());
                     }
                 }
             }

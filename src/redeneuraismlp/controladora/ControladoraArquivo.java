@@ -1,23 +1,15 @@
 package redeneuraismlp.controladora;
 
 import redeneuraismlp.entidades.Arquivo;
+import redeneuraismlp.entidades.CalculoRedeNeural;
 
 public class ControladoraArquivo {
 
     private Arquivo arq;
-    private int camadaOculta;
-    private double erroMinimo;
-    private int maximaInteract;
-    private int taxaAprend;
-    private String funcaoTrans;
-
+    private CalculoRedeNeural redeNeural;
+   
     public ControladoraArquivo() {
-
-        this.camadaOculta = 0;
-        this.erroMinimo = 0;
-        this.maximaInteract = 0;
-        this.taxaAprend = 0;
-        this.funcaoTrans = "";
+     
     }
 
     public void AbrirArquivo(String path) {
@@ -33,6 +25,20 @@ public class ControladoraArquivo {
 
     public void resetaDados() {
         arq = null;
+    }
+    
+    public void chamarAlgoritmo(int camadaoculta, double errominimo, int maximainteract, double taxaaprend, int funcaoTrans,
+    boolean isTest){
+        
+        redeNeural = new CalculoRedeNeural(camadaoculta, errominimo, maximainteract, taxaaprend, funcaoTrans, 
+                arq.getOutputLayer(), arq.getInputLayer(), arq.getClasses());
+        
+       // System.out.println(isTest);
+       
+       if(isTest)
+           redeNeural.testar(arq.getLinhas());
+       else
+            redeNeural.treinar(arq.getLinhas());
     }
 
 }

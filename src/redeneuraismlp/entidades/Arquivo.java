@@ -14,7 +14,7 @@ public class Arquivo {
     private int hiddenLayer;
     private List<LinhaCSV> linhas;
     private List<Normalizacao> normalizacaos;
-    private List<String> colunas;
+    private List<String> classes;
 
     public Arquivo(String path) {
 
@@ -28,7 +28,7 @@ public class Arquivo {
         this.outputLayer = this.inputLayer = this.hiddenLayer = 0;
         this.linhas = new ArrayList<LinhaCSV>();
         this.normalizacaos = new ArrayList<Normalizacao>();
-        this.colunas = new ArrayList<String>();
+        this.classes = new ArrayList<String>();
 
     }
 
@@ -54,6 +54,10 @@ public class Arquivo {
 
     public List<LinhaCSV> getLinhas() {
         return linhas;
+    }
+
+    public List<String> getClasses() {
+        return classes;
     }
 
     
@@ -142,6 +146,7 @@ public class Arquivo {
                             
                             qtdClasses++;
                             classeAnt = data[j][i];
+                            this.classes.add(classeAnt);
                         }
                     }
 
@@ -162,6 +167,11 @@ public class Arquivo {
                      System.out.println(linhas.get(i).getAtributos().get(k).getValor());
                     System.out.println(linhas.get(i).getAtributos().get(k).getNome());
                 }
+            }
+            
+            for (int i = 0; i < classes.size(); i++) {
+                
+                System.out.println(classes.get(i));
             }*/
             
             csvReader.close();
