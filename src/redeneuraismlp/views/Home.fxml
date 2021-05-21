@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXCheckBox?>
+<?import javafx.scene.chart.CategoryAxis?>
+<?import javafx.scene.chart.LineChart?>
+<?import javafx.scene.chart.NumberAxis?>
+<?import javafx.scene.control.Accordion?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.TitledPane?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="520.0" prefWidth="720.0" style="-fx-background-color: transparent;" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="redeneuraismlp.HomeController">
+   <children>
+      <Accordion style="-fx-background-color: transparent;">
+        <panes>
+          <TitledPane animated="false" prefHeight="518.0" prefWidth="720.0" style="-fx-background-color: #3C3F41;" text="Inputs">
+               <content>
+                  <HBox prefHeight="100.0" prefWidth="200.0" spacing="10.0">
+                     <children>
+                        <VBox prefHeight="427.0" prefWidth="153.0" spacing="10.0">
+                           <children>
+                              <JFXButton fx:id="btnArquivo" onAction="#abrir_arquivo" prefHeight="24.0" prefWidth="124.0" style="-fx-background-color: #cdcdcd;" text="Abrir Arquivo" />
+                              <JFXButton fx:id="btnFecharArquivo" prefHeight="24.0" prefWidth="124.0" style="-fx-background-color: #cdcdcd;" text="Fechar Arquivo" />
+                              <JFXCheckBox fx:id="ckbisTeste" text="Arquivo de Teste">
+                                 <font>
+                                    <Font size="12.0" />
+                                 </font>
+                              </JFXCheckBox>
+                              <JFXCheckBox fx:id="ckbisMSLINT" text="MSLINT">
+                                 <font>
+                                    <Font size="12.0" />
+                                 </font>
+                              </JFXCheckBox>
+                              <JFXButton fx:id="btnExecutar" prefHeight="24.0" prefWidth="124.0" style="-fx-background-color: #cdcdcd;" text="Executar" />
+                           </children>
+                        </VBox>
+                        <VBox prefHeight="427.0" prefWidth="177.0" spacing="10.0">
+                           <children>
+                              <Label text="Configurar Neurônios">
+                                 <font>
+                                    <Font name="System Bold" size="13.0" />
+                                 </font>
+                              </Label>
+                              <TextField fx:id="txfCamadaEntrada" promptText="Camada de Entrada" style="-fx-background-color: #dfdfdf;" />
+                              <TextField fx:id="txfCamadaSaida" promptText="Camada de Saída" style="-fx-background-color: #dfdfdf;" />
+                              <TextField fx:id="txfCamadaOculta" promptText="Camada Oculta" style="-fx-background-color: #dfdfdf;" />
+                           </children>
+                        </VBox>
+                        <VBox prefHeight="427.0" prefWidth="178.0" spacing="10.0">
+                           <children>
+                              <Label text="Configurar Neurônios">
+                                 <font>
+                                    <Font name="System Bold" size="13.0" />
+                                 </font>
+                              </Label>
+                              <TextField fx:id="txfValorErro" promptText="Valor do Erro" style="-fx-background-color: #dfdfdf;" />
+                              <TextField fx:id="txfNumeroMaximo" promptText="Máximo de Interações" style="-fx-background-color: #dfdfdf;" />
+                              <TextField fx:id="txfTaxaAprend" promptText="Taxa de Aprendizagem" style="-fx-background-color: #dfdfdf;" />
+                           </children>
+                        </VBox>
+                        <VBox prefHeight="427.0" prefWidth="198.0" spacing="10.0">
+                           <children>
+                              <Label text="Função de Transferência">
+                                 <font>
+                                    <Font name="System Bold" size="13.0" />
+                                 </font>
+                              </Label>
+                              <JFXCheckBox fx:id="ckbLinear" text="Linear">
+                                 <font>
+                                    <Font size="12.0" />
+                                 </font>
+                              </JFXCheckBox>
+                              <JFXCheckBox fx:id="ckbLogis" text="Logística">
+                                 <font>
+                                    <Font size="12.0" />
+                                 </font>
+                              </JFXCheckBox>
+                              <JFXCheckBox fx:id="ckbHiper" text="Hiperbólica">
+                                 <font>
+                                    <Font size="12.0" />
+                                 </font>
+                              </JFXCheckBox>
+                           </children>
+                        </VBox>
+                     </children>
+                  </HBox>
+               </content>
+          </TitledPane>
+            <TitledPane animated="false" prefHeight="496.0" prefWidth="720.0" text="Tabela">
+              <content>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" style="-fx-background-color: #bcdef1;">
+                     <children>
+                        <TableView fx:id="tableCsv" layoutX="166.0" layoutY="81.0" prefHeight="200.0" prefWidth="200.0">
+                          <columns>
+                            <TableColumn prefWidth="75.0" text="C1" />
+                            <TableColumn prefWidth="75.0" text="C2" />
+                          </columns>
+                        </TableView>
+                     </children>
+                  </AnchorPane>
+              </content>
+            </TitledPane>
+          <TitledPane animated="false" prefHeight="530.0" prefWidth="720.0" text="Gráfico">
+            <content>
+              <AnchorPane minHeight="200.0" minWidth="200.0" prefHeight="236.0" prefWidth="718.0">
+                     <children>
+                        <LineChart layoutX="90.0" layoutY="155.0" prefHeight="140.0" prefWidth="500.0">
+                          <xAxis>
+                            <CategoryAxis side="BOTTOM" />
+                          </xAxis>
+                          <yAxis>
+                            <NumberAxis side="LEFT" />
+                          </yAxis>
+                        </LineChart>
+                     </children>
+                  </AnchorPane>
+            </content>
+          </TitledPane>
+        </panes>
+      </Accordion>
+   </children>
+</VBox>
