@@ -14,7 +14,7 @@ public class Arquivo {
     private int hiddenLayer;
     private List<LinhaCSV> linhas;
     private List<Normalizacao> normalizacaos;
-    private List<String> colunas;
+    private List<String> classes;
 
     public Arquivo(String path) {
 
@@ -28,7 +28,7 @@ public class Arquivo {
         this.outputLayer = this.inputLayer = this.hiddenLayer = 0;
         this.linhas = new ArrayList<LinhaCSV>();
         this.normalizacaos = new ArrayList<Normalizacao>();
-        this.colunas = new ArrayList<String>();
+        this.classes = new ArrayList<String>();
 
     }
 
@@ -52,12 +52,40 @@ public class Arquivo {
         return hiddenLayer;
     }
 
-    public void setHiddenLayer(int hiddenLayer) {
-        this.hiddenLayer = hiddenLayer;
+    public List<LinhaCSV> getLinhas() {
+        return linhas;
     }
 
+    public List<String> getClasses() {
+        return classes;
+    }
+
+    
     private void normalizar() {
-        // após ler normalizar
+       
+       float valorAntigo, novoValor;
+        List<Atributo> listAux;
+        
+        for (int i = 0; i < normalizacaos.size(); i++) {
+            
+            normalizacaos.get(i).setIntervalo();
+        }
+        
+        for (int i = 0; i < linhas.size(); i++) {
+            
+            listAux = linhas.get(i).getAtributos();
+            
+            for (int j = 0; j < listAux.size(); j++) {
+                        
+                // novo valor = (valor antigo - menor valor)/ intervalo
+                valorAntigo = listAux.get(j).getValor();                
+                novoValor = (float) ((valorAntigo - normalizacaos.get(j).getMenorValor()) / normalizacaos.get(j).getIntervalo());
+                
+                 novoValor = (float)(Math.floor(novoValor * 1000) / 1000);           
+               
+                listAux.get(j).setValor(novoValor);
+            }
+        }
     }
 
     public void lerArquivo() {
@@ -67,13 +95,33 @@ public class Arquivo {
         String [] atributos = new String[790];
         String classe = "";
         LinhaCSV linha;
-        double valor;
+        float valor;
         int j = 0;
+        int qtdClasses = 0;
+        String classeAnt = "";
+        
         try {
 
             row = csvReader.readLine();
             atributos = row.split(",");
+            normalizacaos = new ArrayList();            
+            
+            for (int i = 0; i < atributos.length; i++) {
+                
+                if(atributos[i] != "" && !atributos[i].equals("classe")){
                     
+                    normalizacaos.add(new Normalizacao(atributos[i], 0, 0));
+                }
+            }
+            
+            inputLayer = normalizacaos.size();
+            /*
+            for (int i = 0; i < normalizacaos.size(); i++) {
+                
+                System.out.println(normalizacaos.get(i).getAtributo());
+            }*/
+            
+            
             while ((row = csvReader.readLine()) != null) {
                
                 data[j] = row.split(",");
@@ -81,10 +129,28 @@ public class Arquivo {
                
                 linha = new LinhaCSV(classe);
                 
-                for (int i = 0; i < data[j].length-1; i++) {
-                    
-                    valor = Double.parseDouble(data[j][i]);
-                   linha.setAtributo(atributos[i], valor);
+                for (int i = 0; i < data[j].length; i++) {
+
+                    if (i != data[j].length-1) {
+                        valor = Float.parseFloat(data[j][i]);
+                        linha.setAtributo(atributos[i], valor);
+
+                        if (valor < normalizacaos.get(i).getMenorValor()) {
+                            normalizacaos.get(i).setMenorValor(valor);
+                        } else if (valor > normalizacaos.get(i).getMaiorValor()) {
+                            normalizacaos.get(i).setMaiorValor(valor);
+                        }
+                    }
+                    else{
+                        
+                        if(classeAnt.equals("") || !classeAnt.equals(data[j][i])){
+                            
+                            qtdClasses++;
+                            classeAnt = data[j][i];
+                            this.classes.add(classeAnt);
+                        }
+                    }
+
                 }
                                 
                 linhas.add(linha);
@@ -102,12 +168,21 @@ public class Arquivo {
                      System.out.println(linhas.get(i).getAtributos().get(k).getValor());
                     System.out.println(linhas.get(i).getAtributos().get(k).getNome());
                 }
+            }
+            
+            for (int i = 0; i < classes.size(); i++) {
+                
+                System.out.println(classes.get(i));
             }*/
             
             csvReader.close();
 
         } catch (IOException ex) {
         }
+        
+        outputLayer = qtdClasses;
+        this.hiddenLayer = (inputLayer + outputLayer) / 2;
+        normalizar();
 
     }
 

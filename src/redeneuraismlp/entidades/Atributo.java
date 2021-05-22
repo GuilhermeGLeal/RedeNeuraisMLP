@@ -5,9 +5,9 @@ package redeneuraismlp.entidades;
 public class Atributo {
     
     private String nome;
-    private double valor;
+    private float valor;
 
-    public Atributo(String nome, double valor) {
+    public Atributo(String nome, float valor) {
         this.nome = nome;
         this.valor = valor;
     }
@@ -20,11 +20,11 @@ public class Atributo {
         this.nome = nome;
     }
 
-    public double getValor() {
+    public float getValor() {
         return valor;
     }
 
-    public void setValor(double valor) {
+    public void setValor(float valor) {
         this.valor = valor;
     }
 }
