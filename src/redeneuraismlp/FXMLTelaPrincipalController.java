@@ -5,9 +5,11 @@ import com.jfoenix.controls.JFXCheckBox;
 import com.jfoenix.controls.JFXTextField;
 import java.io.File;
 import java.net.URL;
+import java.util.Arrays;
 import java.util.List;
 import java.util.ResourceBundle;
 import javafx.beans.property.ReadOnlyStringWrapper;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -18,16 +20,20 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.cell.MapValueFactory;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import redeneuraismlp.controladora.ControladoraArquivo;
+import redeneuraismlp.entidades.Atributo;
 import redeneuraismlp.entidades.LinhaCSV;
+import redeneuraismlp.entidades.LinhaTabela;
 
 public class FXMLTelaPrincipalController implements Initializable {
     
     @FXML
-    private TableView<LinhaCSV> tableCsv;
+    private TableView<LinhaTabela> tableCsv;
     @FXML
     private JFXTextField txfCamadaEntrada;
     @FXML
@@ -68,7 +74,7 @@ public class FXMLTelaPrincipalController implements Initializable {
 
     private void valoresBases(){
             
-        txfValorErro.setText(""+0);
+        txfValorErro.setText(""+0.001);
         txfCamadaEntrada.setText(""+0);
         txfCamadaSaida.setText(""+0);
         txfCamadaOculta.setText(""+0);
@@ -81,6 +87,7 @@ public class FXMLTelaPrincipalController implements Initializable {
     private void fechar_arquivo(ActionEvent event){
         
         valoresBases();
+        projeto = null;
     }
 
     @FXML
@@ -105,6 +112,35 @@ public class FXMLTelaPrincipalController implements Initializable {
                     System.out.println(projeto.getPath());
                     System.out.println(projeto.getAbsoluteFile());
                     control.AbrirArquivo(projeto.getPath());
+                txfCamadaEntrada.setText(""+control.getArq().getInputLayer());
+               txfCamadaOculta.setText(""+control.getArq().getHiddenLayer());
+               txfCamadaSaida.setText(""+control.getArq().getOutputLayer());
+
+               for (int i = 0; i < control.getArq().getLinhas().get(i).getAtributos().size(); i++) {
+
+                   TableColumn<LinhaCSV, String> col = new TableColumn<>("Column "+(i+1));
+                   col.setMinWidth(80);
+                   final int colIndex = i ;
+
+                   /*
+                   col.setCellValueFactory(data -> {
+                       List<String> rowValues = data.getValue();
+                       String cellValue ;
+                       if (colIndex < rowValues.size()) {
+                           cellValue = rowValues.get(colIndex);
+                       } else {
+                            cellValue = "" ;
+                       }
+                       return new ReadOnlyStringWrapper(cellValue);
+                   });
+
+                   tableCsv.getColumns().add(col);
+               }   
+
+               ObservableList<LinhaCSV> modelo = FXCollections.observableArrayList(control.getArq().getLinhas());
+               tableCsv.setItems(modelo);
+
+                    
                 }
             } else {
                 break;
@@ -112,33 +148,11 @@ public class FXMLTelaPrincipalController implements Initializable {
         }*/
         projeto = new File("D:\\Downloads\\base_treinamento.csv");
         control.AbrirArquivo(projeto.getPath());
-        txfCamadaEntrada.setText(""+control.getArq().getInputLayer());
-        txfCamadaOculta.setText(""+control.getArq().getHiddenLayer());
-        txfCamadaSaida.setText(""+control.getArq().getOutputLayer());
-        
-        for (int i = 0; i < control.getArq().getLinhas().get(i).getAtributos().size(); i++) {
-            
-            TableColumn<LinhaCSV, String> col = new TableColumn<>("Column "+(i+1));
-            col.setMinWidth(80);
-            final int colIndex = i ;
-          
-            /*
-            col.setCellValueFactory(data -> {
-                List<String> rowValues = data.getValue();
-                String cellValue ;
-                if (colIndex < rowValues.size()) {
-                    cellValue = rowValues.get(colIndex);
-                } else {
-                     cellValue = "" ;
-                }
-                return new ReadOnlyStringWrapper(cellValue);
-            });
-            */
-            tableCsv.getColumns().add(col);
-        }   
-        
-        ObservableList<LinhaCSV> modelo = FXCollections.observableArrayList(control.getArq().getLinhas());
-        tableCsv.setItems(modelo);
+        txfCamadaEntrada.setText("" + control.getArq().getInputLayer());
+        txfCamadaOculta.setText("" + control.getArq().getHiddenLayer());
+        txfCamadaSaida.setText("" + control.getArq().getOutputLayer());
+       
+             
     }
 
     private boolean validaDouble(String valor, String campo){
@@ -208,8 +222,8 @@ public class FXMLTelaPrincipalController implements Initializable {
         double valorErro; 
         int numeroMax;
         double taxaAprend; 
-        int funcao;
-        
+        int funcao;        
+      
         
         if(!validaInt(txfCamadaOculta.getText(), "Camada Oculta")){
             
@@ -225,9 +239,10 @@ public class FXMLTelaPrincipalController implements Initializable {
                         
                         valorErro = Double.parseDouble(txfValorErro.getText());
                         taxaAprend = Double.parseDouble(txfTaxaAprend.getText());
+                        boolean isMSLINT = ckbisMSLINT.isSelected();
                         
-                        //System.out.println(funcao);
-                        control.chamarAlgoritmo(camadaOculta, valorErro, numeroMax,taxaAprend, funcao, ckbisTeste.isSelected());
+                        control.chamarAlgoritmo(camadaOculta, valorErro, numeroMax,taxaAprend, funcao, ckbisTeste.isSelected(),
+                                isMSLINT);
                     }
                 }
             }

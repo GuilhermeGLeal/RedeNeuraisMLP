@@ -26,11 +26,20 @@ public class LinhaCSV {
         return atributos;
     }
     
-    public void setAtributo(String nome, double valor){
+    public void setAtributo(String nome, float valor){
         
         this.atributos.add(new Atributo(nome, valor));
     }
 
-
-
+    public List<Float> retornaValores(){
+        
+        List<Float> valores = new ArrayList();
+        
+        for (int i = 0; i < atributos.size(); i++) {
+            
+            valores.add(atributos.get(i).getValor());
+        }
+        
+        return valores;
+    }
 }

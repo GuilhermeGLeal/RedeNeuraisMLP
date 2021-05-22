@@ -28,17 +28,28 @@ public class ControladoraArquivo {
     }
     
     public void chamarAlgoritmo(int camadaoculta, double errominimo, int maximainteract, double taxaaprend, int funcaoTrans,
-    boolean isTest){
+    boolean isTest, boolean isMSLINT){
         
         redeNeural = new CalculoRedeNeural(camadaoculta, errominimo, maximainteract, taxaaprend, funcaoTrans, 
                 arq.getOutputLayer(), arq.getInputLayer(), arq.getClasses());
         
-       // System.out.println(isTest);
+     
+        if(!isMSLINT){
+                
+             if(isTest)
+                redeNeural.testar(arq.getLinhas());
+            else
+                 redeNeural.treinar(arq.getLinhas());
+        }   
+        else
+            chamaBaseMSLINT();
        
-       if(isTest)
-           redeNeural.testar(arq.getLinhas());
-       else
-            redeNeural.treinar(arq.getLinhas());
+      
+    }
+    
+    public void chamaBaseMSLINT(){
+        
+        
     }
 
 }

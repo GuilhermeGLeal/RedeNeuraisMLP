@@ -63,7 +63,7 @@ public class Arquivo {
     
     private void normalizar() {
        
-       double valorAntigo, novoValor;
+       float valorAntigo, novoValor;
         List<Atributo> listAux;
         
         for (int i = 0; i < normalizacaos.size(); i++) {
@@ -79,9 +79,10 @@ public class Arquivo {
                         
                 // novo valor = (valor antigo - menor valor)/ intervalo
                 valorAntigo = listAux.get(j).getValor();                
-                novoValor = (valorAntigo - normalizacaos.get(j).getMenorValor()) / normalizacaos.get(j).getIntervalo();
+                novoValor = (float) ((valorAntigo - normalizacaos.get(j).getMenorValor()) / normalizacaos.get(j).getIntervalo());
                 
-                //System.out.println(novoValor + listAux.get(j).getNome());
+                 novoValor = (float)(Math.floor(novoValor * 1000) / 1000);           
+               
                 listAux.get(j).setValor(novoValor);
             }
         }
@@ -94,7 +95,7 @@ public class Arquivo {
         String [] atributos = new String[790];
         String classe = "";
         LinhaCSV linha;
-        double valor;
+        float valor;
         int j = 0;
         int qtdClasses = 0;
         String classeAnt = "";
@@ -131,7 +132,7 @@ public class Arquivo {
                 for (int i = 0; i < data[j].length; i++) {
 
                     if (i != data[j].length-1) {
-                        valor = Double.parseDouble(data[j][i]);
+                        valor = Float.parseFloat(data[j][i]);
                         linha.setAtributo(atributos[i], valor);
 
                         if (valor < normalizacaos.get(i).getMenorValor()) {

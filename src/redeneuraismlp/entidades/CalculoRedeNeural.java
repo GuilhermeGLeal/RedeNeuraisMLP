@@ -18,7 +18,6 @@ public class CalculoRedeNeural {
     private List<Double> errosdaRede;
     private int saidaEsperada[];
     private List<String> classes;
-    private int cont = 0;
 
     public CalculoRedeNeural(int camadaOculta, double erroMinimo, int maximaInteract, double taxaAprend, int funcaoTrans, int camadaSaida, int camadaEntrada,
             List<String> classes) {
@@ -29,21 +28,10 @@ public class CalculoRedeNeural {
         this.funcaoTrans = funcaoTrans;
         this.camadaSaida = camadaSaida;
         this.camadaEntrada = camadaEntrada;
-        this.saidaEsperada = new int[camadaSaida];
-        this.camadaOcultaMLP = new ArrayList();
-        this.camadaSaidaMLP = new ArrayList();
-        this.errosdaRede = new ArrayList();       
+        this.saidaEsperada = new int[camadaSaida];     
         this.classes = classes;
-        
-        System.out.println(camadaOculta);
-        System.out.println(erroMinimo);
-        System.out.println(maximaInteract);
-        System.out.println(taxaAprend);
-        System.out.println(funcaoTrans);
-        System.out.println(camadaSaida);
-        System.out.println(camadaEntrada);
-                    
-        calculaNeuronios();
+      
+      
     }
   
     private void setSaidaEsperada(String classeAtual) {
@@ -52,20 +40,14 @@ public class CalculoRedeNeural {
         this.saidaEsperada = new int[camadaSaida];
         
         this.saidaEsperada[posClasse] = 1;
-
-        /*
-        for (int i = 0; i < saidaEsperada.length; i++) {
-            
-            System.out.println(saidaEsperada[i]);
-        }
-        
-        System.out.println(classeAtual);
-        System.out.println(posClasse);
-        */
+     
     }
     
     private void calculaNeuronios() {
-
+    
+       this.camadaOcultaMLP = new ArrayList();
+       this.camadaSaidaMLP = new ArrayList();
+       
         // criando os neuronios da camada oculta
         for (int i = 0; i < camadaOculta; i++) {
 
@@ -80,40 +62,40 @@ public class CalculoRedeNeural {
 
     }
 
-    private double linear(double net){
+    private float linear(float net){
         
         return  net / 10;
     }
     
-    private double linearDerivada(){
+    private float linearDerivada(){
         
-        return  0.1;
+        return  (float) 0.1;
     }
     
-    private double logistica(double net){
+    private float logistica(float net){
         
         double numeroEuler = 2.7182818284;
         double pow = Math.pow(numeroEuler, -net);
         
-        return 1 / ( 1 + pow);
+        return (float) (1 / ( 1 + pow));
     }
     
-    private double logisticaDerivada(double net){
+    private float logisticaDerivada(float saida){
         
-        return  net * (1 - net);
+        return  (float) (saida * (1 - saida));
     }
     
-    private double Hiperbolica(double net){
+    private float Hiperbolica(float net){
         
         double numeroEuler = 2.7182818284;
         double pow = Math.pow(numeroEuler, -(2 * net));
         
-        return (1 - pow) / (1 + pow) ;
+        return (float) ((1 - pow) / (1 + pow)) ;
     }
     
-    private double HiperbolicaDerivada(double net){
+    private float HiperbolicaDerivada(float saida){
         
-        return  1 - Math.pow(net, 2);
+        return  (float) (1 - Math.pow(saida, 2));
     }
     
    
@@ -121,20 +103,25 @@ public class CalculoRedeNeural {
     private double calcularErroRede(){
      
         double soma = 0;
+        double pow;
         
+                
         for (int i = 0; i < camadaSaida; i++) {
             
-            soma =+ Math.pow(camadaSaidaMLP.get(i).getErro(), 2);
+            pow = camadaSaidaMLP.get(i).getErro() * camadaSaidaMLP.get(i).getErro();   
+            
+            soma += pow;
         }
         
+        System.out.println(soma);
         soma += 0.5 * soma;
         
         return soma;
     }
     
-    private double retornaSaida(double net){
+    private float retornaSaida(float net){
         
-        double valor = 0;
+        float valor = 0;
         
         if(funcaoTrans == 1){
             
@@ -152,9 +139,9 @@ public class CalculoRedeNeural {
         return valor;
     }
     
-    private double retornaGradiente(double net){
+    private float retornaGradiente(float saida){
         
-        double valor = 0;
+        float valor = 0;
         
         if(funcaoTrans == 1){
             
@@ -162,11 +149,11 @@ public class CalculoRedeNeural {
         }
         else if(funcaoTrans == 2){
          
-            valor = logisticaDerivada(net);
+            valor = logisticaDerivada(saida);
         }
         else{
             
-            valor = HiperbolicaDerivada(net);
+            valor = HiperbolicaDerivada(saida);
         }
         
         return valor;
@@ -174,9 +161,9 @@ public class CalculoRedeNeural {
     
     private void calcularCamadaOculta(List<Atributo> linha){
         
-        double netNeuronio = 0;
-        double valorLinha;
-        double saida;
+        float netNeuronio = 0;
+        float valorLinha;
+        float saida;
         
         for (int i = 0; i < camadaOculta; i++) {
 
@@ -189,7 +176,9 @@ public class CalculoRedeNeural {
                 netNeuronio += valorLinha * this.camadaOcultaMLP.get(i).getPeso(j);
             }
             
-            saida = retornaSaida(netNeuronio);
+            saida = retornaSaida(netNeuronio);     
+            
+        
             
             this.camadaOcultaMLP.get(i).setNet(netNeuronio);
             this.camadaOcultaMLP.get(i).setSaida(saida);
@@ -201,11 +190,11 @@ public class CalculoRedeNeural {
     
     private void calcularCamadaSaida(){
         
-        double netNeuronio = 0;
-        double valorLinha;
-        double saida;
-        double erro;
-        double retorno;
+        float netNeuronio = 0;
+        float valorLinha;
+        float saida;
+        float erro;
+        float retorno;
                 
         for (int i = 0; i < camadaSaida; i++) {
             
@@ -216,7 +205,7 @@ public class CalculoRedeNeural {
             }
             
             saida = retornaSaida(netNeuronio);
-            retorno = retornaGradiente(netNeuronio);
+            retorno =  retornaGradiente(saida);
             erro = (saidaEsperada[i] - saida) * retorno;
             
             this.camadaSaidaMLP.get(i).setNet(netNeuronio);
@@ -228,9 +217,9 @@ public class CalculoRedeNeural {
     
     private void calculaErroCamadaOculta() {
 
-        double retorno;
-        double erro = 0, erroGrad;
-        double valorLinha;
+        float retorno;
+        float erro = 0, erroGrad;
+        float valorLinha;
         
         for (int i = 0; i < camadaOculta; i++) {
             
@@ -240,7 +229,7 @@ public class CalculoRedeNeural {
                 erro += valorLinha * this.camadaSaidaMLP.get(j).getPeso(i);
             }
             
-            retorno = retornaGradiente(camadaOcultaMLP.get(i).getNet());
+            retorno = retornaGradiente(camadaOcultaMLP.get(i).getSaida());
             erroGrad = erro * retorno;
             
             this.camadaOcultaMLP.get(i).setErro(erroGrad);
@@ -249,86 +238,66 @@ public class CalculoRedeNeural {
     
     public void calcularNovosPesosCamadaSaida(){
         
-        double saidaOculta;
-        double valorErro, novoPeso, valorPeso;
+        float saidaOculta;
+        float valorErro, novoPeso, valorPeso;
+        List<Float> novosPesos;
         
         for (int i = 0; i < camadaSaida; i++) {
             
-            valorErro = this.camadaSaidaMLP.get(i).getErro();
+            valorErro = this.camadaSaidaMLP.get(i).getErro();         
+            novosPesos = new ArrayList();
             
             for (int j = 0; j < camadaOculta; j++) {
                 
                 saidaOculta = this.camadaOcultaMLP.get(j).getSaida();
                 valorPeso = this.camadaSaidaMLP.get(i).getPeso(j);
                 
-                novoPeso = valorPeso + taxaAprend * valorErro * saidaOculta;
+                novoPeso = (float) (valorPeso + taxaAprend * valorErro * saidaOculta);
                 
-                this.camadaSaidaMLP.get(i).setPeso(j, novoPeso);
-            }
-        }
-    }
-    
-    public void calcularNovosPesosCamadaSaidaCopia(){
-        
-        List<Tarefa> tarefas = new ArrayList();
-        double valorErro;
-        
-        for (int i = 0; i < camadaSaida; i++) {
-            
-            valorErro = this.camadaSaidaMLP.get(i).getErro();
-            Tarefa tar = new Tarefa(erroMinimo, camadaOcultaMLP, camadaSaidaMLP, taxaAprend, i);
-            tar.setName("Neuronio: "+i+" começou as contas!");
-            tarefas.add(tar);
-        }
-        
-        for (int i = 0; i < tarefas.size(); i++) {
-            
-            tarefas.get(i).start();
-        }
-        
-        try {
-            for (int i = 0; i < tarefas.size(); i++) {
-                
-                tarefas.get(i).join();
+                 novosPesos.add(j, novoPeso);
             }
             
-        } catch (InterruptedException ex) {
-            ex.printStackTrace();
+             this.camadaSaidaMLP.get(i).resetaPesos(novosPesos);
         }
-        
-        
     }
-    
-    
+              
     public void calcularNovosPesosCamadaOculta(List<Atributo> atributos) {
         
-        double entrada;
-        double valorErro, novoPeso, valorPeso;
-        
+        float entrada;
+        float valorErro, novoPeso, valorPeso;
+        List<Float> novosPesos;
+
         for (int i = 0; i < camadaOculta; i++) {
             
             valorErro = this.camadaOcultaMLP.get(i).getErro();
+            novosPesos = new ArrayList();
             
             for (int j = 0; j < camadaEntrada; j++) {
                 
                 entrada = atributos.get(j).getValor();
                 valorPeso = this.camadaOcultaMLP.get(i).getPeso(j);
                 
-                novoPeso = valorPeso + taxaAprend * valorErro * entrada;
+                novoPeso = (float) (valorPeso + taxaAprend * valorErro * entrada);
                 
-                this.camadaOcultaMLP.get(i).setPeso(j, novoPeso);
+                 novosPesos.add(j, novoPeso);
             }
+            
+             this.camadaOcultaMLP.get(i).resetaPesos(novosPesos);
         }
     }
-    
+   
     public void treinar(List<LinhaCSV> linhasCSV) {
 
         LinhaCSV linha;
         double soma;
+        boolean erroMin = false;
 
-        for (int i = 0; i < maximaInteract; i++) {
+        this.errosdaRede = new ArrayList();
+          calculaNeuronios();
+          
+        for (int i = 0; i < maximaInteract && !erroMin; i++) {
 
-            for (int j = 0; j < linhasCSV.size(); j++) {
+            for (int j = 0; j < linhasCSV.size() && !erroMin; j++) {
 
                 linha = linhasCSV.get(j);
                 setSaidaEsperada(linha.getValorclasse()); // seta matriz de resultado esperado
@@ -336,20 +305,36 @@ public class CalculoRedeNeural {
                 calcularCamadaOculta(linha.getAtributos()); // calcula o net e a saida dos neuronios da camada oculta
                 calcularCamadaSaida(); // calcular net, saida e erro da camada de saida
                 soma = calcularErroRede(); // erro da rede
-                this.errosdaRede.add(soma);                
-                if (soma == erroMinimo) { // se atingir o erro minimo para o algortimo
-                    i = maximaInteract + 1;
+
+                this.errosdaRede.add((double) soma);
+
+              
+
+                if (soma <= erroMinimo) { // se atingir o erro minimo para o algortimo
+
+                    System.out.printf("erro final: %.10f", soma);
+                    System.out.println("Terminou na epoca: " + i);
+
+                    erroMin = true;
                 }
-               
-                calculaErroCamadaOculta(); // calcula o erro da camada oculta
-                calcularNovosPesosCamadaSaidaCopia();// atualizar pesos da camada de saida
-                //calcularNovosPesosCamadaOculta(linha.getAtributos());// atualizar pessos da  camada oculta
 
-            }           
-            
-            System.out.println("acabou epoca: "+i);
+                if (!erroMin) {
 
+                    calculaErroCamadaOculta(); // calcula o erro da camada oculta
+                    calcularNovosPesosCamadaSaida();// atualizar pesos da camada de saida
+                    calcularNovosPesosCamadaOculta(linha.getAtributos());// atualizar pessos da  camada oculta
+                }
+
+            }
+
+            System.out.println("Epoca: " + i);
         }
+
+        if (!erroMin) {
+
+            System.out.println("Não foi possivel chegar no erro minimo, menor erro encontrado: " + errosdaRede.get(errosdaRede.size() - 1));
+        }
+      
     }
     
      public void testar(List<LinhaCSV> linhasCSV){
