@@ -95,71 +95,52 @@ public class FXMLTelaPrincipalController implements Initializable {
         
         valoresBases();
         projeto = null;
+        
+        control.resetaDados();
     }
 
     @FXML
     private void abrir_arquivo(ActionEvent event) {
-        
+          /*
+        if(!ckbisTeste.isSelected()){
+            
+            projeto = new File("D:\\Downloads\\base_treinamento.csv");
+        }
+        else{
+             projeto = new File("D:\\Downloads\\base_teste.csv");
+        }
+   
+        control.AbrirArquivo(projeto.getPath(), projeto.getName());
+        txfCamadaEntrada.setText("" + control.getArq().getInputLayer());
+        txfCamadaOculta.setText("" + control.getArq().getHiddenLayer());
+        txfCamadaSaida.setText("" + control.getArq().getOutputLayer());
+       */
         JFileChooser file = new JFileChooser();
         file.setFileSelectionMode(JFileChooser.FILES_ONLY);
         FileNameExtensionFilter filter = new FileNameExtensionFilter("CSV FILES", "csv", ".csv");
         file.setFileFilter(filter);
         boolean correto = false;
-                 
-        /*
+    
         while (!correto) {
 
             if (file.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
-            
+
                 projeto = file.getSelectedFile();
                 if (!projeto.getAbsolutePath().endsWith("csv")) {
                     JOptionPane.showMessageDialog(null, "Opção inválida, selecione novamente um arquivo");
                 } else {
                     correto = true;
-                    System.out.println(projeto.getPath());
-                    System.out.println(projeto.getAbsoluteFile());
-                    control.AbrirArquivo(projeto.getPath());
-                txfCamadaEntrada.setText(""+control.getArq().getInputLayer());
-               txfCamadaOculta.setText(""+control.getArq().getHiddenLayer());
-               txfCamadaSaida.setText(""+control.getArq().getOutputLayer());
+                      control.AbrirArquivo(projeto.getPath(), projeto.getName());
+                    txfCamadaEntrada.setText("" + control.getArq().getInputLayer());
+                    txfCamadaOculta.setText("" + control.getArq().getHiddenLayer());
+                    txfCamadaSaida.setText("" + control.getArq().getOutputLayer());
 
-               for (int i = 0; i < control.getArq().getLinhas().get(i).getAtributos().size(); i++) {
-
-                   TableColumn<LinhaCSV, String> col = new TableColumn<>("Column "+(i+1));
-                   col.setMinWidth(80);
-                   final int colIndex = i ;
-
-                   /*
-                   col.setCellValueFactory(data -> {
-                       List<String> rowValues = data.getValue();
-                       String cellValue ;
-                       if (colIndex < rowValues.size()) {
-                           cellValue = rowValues.get(colIndex);
-                       } else {
-                            cellValue = "" ;
-                       }
-                       return new ReadOnlyStringWrapper(cellValue);
-                   });
-
-                   tableCsv.getColumns().add(col);
-               }   
-
-               ObservableList<LinhaCSV> modelo = FXCollections.observableArrayList(control.getArq().getLinhas());
-               tableCsv.setItems(modelo);
-
-                    
                 }
             } else {
                 break;
             }
-        }*/
-        projeto = new File("F:\\Users\\Desktop\\Pasta Auxiliar\\eozuckersbergson\\base_treinamento.csv");
-        control.AbrirArquivo(projeto.getPath());
-        txfCamadaEntrada.setText("" + control.getArq().getInputLayer());
-        txfCamadaOculta.setText("" + control.getArq().getHiddenLayer());
-        txfCamadaSaida.setText("" + control.getArq().getOutputLayer());
+        }
        
-             
     }
 
     private boolean validaDouble(String valor, String campo){
@@ -251,7 +232,13 @@ public class FXMLTelaPrincipalController implements Initializable {
                         control.chamarAlgoritmo(camadaOculta, valorErro, numeroMax,taxaAprend, funcao, ckbisTeste.isSelected(),
                                 isMSLINT);
                         
-                        exibeErro();
+                        if(!ckbisTeste.isSelected()){
+                                
+                                exibeErro();
+                        }
+                        else
+                            System.out.println("tela da matriz de confusão");
+                    
                     }
                 }
             }

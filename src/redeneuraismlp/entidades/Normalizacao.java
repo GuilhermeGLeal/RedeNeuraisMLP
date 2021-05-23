@@ -5,11 +5,11 @@ package redeneuraismlp.entidades;
 public class Normalizacao {
     
     private String atributo;
-    private float menorValor;
-    private float maiorValor;
-    private float intervalo;
+    private double menorValor;
+    private double maiorValor;
+    private double intervalo;
 
-    public Normalizacao(String atributo, float menorValor, float maiorValor) {
+    public Normalizacao(String atributo, double menorValor, double maiorValor) {
         this.atributo = atributo;
         this.menorValor = menorValor;
         this.maiorValor = maiorValor;
@@ -28,19 +28,19 @@ public class Normalizacao {
         return menorValor;
     }
 
-    public void setMenorValor(float menorValor) {
+    public void setMenorValor(double menorValor) {
         this.menorValor = menorValor;
     }
 
-    public float getMaiorValor() {
+    public double getMaiorValor() {
         return maiorValor;
     }
 
-    public void setMaiorValor(float maiorValor) {
+    public void setMaiorValor(double maiorValor) {
         this.maiorValor = maiorValor;
     }
 
-    public float getIntervalo() {
+    public double getIntervalo() {
         return intervalo;
     }
 

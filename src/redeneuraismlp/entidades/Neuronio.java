@@ -7,10 +7,10 @@ import java.util.Random;
 
 public class Neuronio {
       
-    private float net;
-    private float saida;
-    private float erro;
-    private List<Float> pesos;
+    private double net;
+    private double saida;
+    private double erro;
+    private List<Double> pesos;
     private int qtdPesos;
 
     public Neuronio(int qtdPessos) {
@@ -22,72 +22,66 @@ public class Neuronio {
         setPeso();
     }
 
-    public float getNet() {
+    public double getNet() {
         return net;
     }
 
-    public void setNet(float net) {
-        
-       // net = (float)(Math.floor(net * 1000) / 1000);   
+    public void setNet(double net) {        
+      
         this.net = net;
     }
 
-    public float getSaida() {
+    public double getSaida() {
         return saida;
     }
 
-    public void setSaida(float saida) {
-        
-         //saida = (float)(Math.floor(saida * 1000) / 1000);     
+    public void setSaida(double saida) {        
+       
         this.saida = saida;
     }
 
-    public float getErro() {
+    public double getErro() {
         
      
         return erro;
     }
 
-    public void setErro(float erro) {
-        
-         erro = (float)(Math.floor(erro * 1000) / 1000);     
+    public void setErro(double erro) {        
+      
         this.erro = erro;
     }
     
-    public void resetaPesos(List<Float> novospesos){
+    public void resetaPesos(List<Double> novospesos){
           
         this.pesos = null;
         this.pesos = novospesos;    
     }
     
-    public void setPeso(int pos, float valor){
-        
-       // valor = (float)(Math.floor(valor * 1000) / 1000);           
-        
+    public void setPeso(int pos, double valor){
+                              
         this.pesos.add(pos, valor);
     }
     
     private void setPeso(){
         
-        float rand, rand2;
-        float max = 4;
+        double rand, rand2;
+        double max = 4;
         
         for (int i = 0; i < qtdPesos; i++) {
             
-            rand = new Random().nextFloat()* max;
+            rand = new Random().nextDouble()* max;
             rand2 =  Math.round(new Random().nextInt());
             
             if(rand2 <= 0.5)
                 rand = -rand;            
-           
-            rand = (float)(Math.floor(rand * 1000) / 1000);           
+                           
           
             this.pesos.add(i, rand);
         }
         
     }
     
-    public float getPeso(int pos){
+    public double getPeso(int pos){
         
         return this.pesos.get(pos);
     }
