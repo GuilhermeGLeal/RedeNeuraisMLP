@@ -5,12 +5,18 @@ import com.jfoenix.controls.JFXCheckBox;
 import com.jfoenix.controls.JFXTextField;
 import java.io.File;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
+import java.util.ListIterator;
 import java.util.ResourceBundle;
+import javafx.beans.InvalidationListener;
 import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -232,12 +238,75 @@ public class FXMLTelaPrincipalController implements Initializable {
                         control.chamarAlgoritmo(camadaOculta, valorErro, numeroMax,taxaAprend, funcao, ckbisTeste.isSelected(),
                                 isMSLINT);
                         
-                        if(!ckbisTeste.isSelected()){
-                                
-                                exibeErro();
+                        if(!ckbisTeste.isSelected())
+                        {                              
+                            exibeErro();
                         }
                         else
-                            System.out.println("tela da matriz de confusão");
+                        {
+                            List<String> lista=control.getArq().getClasses();
+                            /*
+                            
+                            TableView tv = new TableView();
+                            TableColumn tc;
+                            tc = new TableColumn("Classes");
+                            tv.getColumns().add(tc); 
+                            
+                            for (int i = 0; i < lista.size(); i++)
+                            {
+                                tc = new TableColumn(lista.get(i));
+                                tc.setCellValueFactory(new PropertyValueFactory<>(lista.get(i)));
+                                tv.getColumns().add(tc);                              
+                            }
+                                
+                            //ObservableList<List<String>> listaObs;
+                            List <String> modelo = new ArrayList();
+                            List <List<String>> listaObs = new ArrayList();
+                            for (int i = 1; i < control.getMatrizConfusao().length; i++)
+                            {
+                                modelo.clear();
+                                for (int j = 0; j < control.getMatrizConfusao()[i].length; j++)
+                                {
+                                   modelo.add(control.getMatrizConfusao()[i][j]+"");
+                                }
+                                listaObs.add(modelo);
+                            }
+                            
+                            tv.setItems(FXCollections.observableArrayList(listaObs));
+                            
+                            ScrollPane root = new ScrollPane(tv);
+                            root.setMinSize(1300,800);
+                            tv.setMinSize(root.getMinWidth(),root.getMinHeight()-20);
+                            Stage stage = new Stage();
+                            Scene scene  = new Scene(root,1215,768);
+                            stage.setScene(scene);
+                            stage.show();*/
+                            System.out.println("\n");
+                            System.out.print("       ");
+                            for (int i = 0; i < lista.size(); i++)
+                            {
+                                System.out.print(lista.get(i)+"    ");                           
+                            }
+                            System.out.println("");
+                            for(int i = 0; i < control.getMatrizConfusao().length; i++)
+                            {
+                                System.out.print(lista.get(i)+"     ");
+                                for (int j = 0; j < control.getMatrizConfusao()[i].length; j++)
+                                {
+                                    if((control.getMatrizConfusao()[i][j]+"").length()==1)
+                                       System.out.print(control.getMatrizConfusao()[i][j]+"     "); 
+                                    else if((control.getMatrizConfusao()[i][j]+"").length()==2)
+                                       System.out.print(control.getMatrizConfusao()[i][j]+"    "); 
+                                    else if((control.getMatrizConfusao()[i][j]+"").length()==3)
+                                       System.out.print(control.getMatrizConfusao()[i][j]+"   ");
+                                    else if((control.getMatrizConfusao()[i][j]+"").length()==4)
+                                       System.out.print(control.getMatrizConfusao()[i][j]+"  ");
+                                    else if((control.getMatrizConfusao()[i][j]+"").length()==5)
+                                       System.out.print(control.getMatrizConfusao()[i][j]+" ");
+                                }
+                                System.out.println("");
+                            }
+                        }
                     
                     }
                 }

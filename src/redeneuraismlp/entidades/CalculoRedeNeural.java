@@ -401,14 +401,14 @@ public class CalculoRedeNeural {
             
         }
         
-        
+        /*
         for (int i = 0; i < matrizConfusão.length; i++) {
             
             for (int j = 0; j < matrizConfusão[i].length; j++) {
                 
                 System.out.println(matrizConfusão[i][j]);
             }
-        }
+        }*/
         
         calcularAcuracia();
         
