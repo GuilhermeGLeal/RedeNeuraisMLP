@@ -430,5 +430,13 @@ public class CalculoRedeNeural {
     public int[][] getMatrizConfusão() {
         return matrizConfusão;
     }
+    
+    public List<Double> getListAcuracia() {
+        return listAcuracia;
+    }
+
+    public double getAcuraciaTotal() {
+        return acuraciaTotal;
+    }
 
 }

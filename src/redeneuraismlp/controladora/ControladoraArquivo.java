@@ -18,6 +18,10 @@ public class ControladoraArquivo {
      
     }
 
+    public CalculoRedeNeural getRedeNeural() {
+        return redeNeural;
+    }
+
     public void resetaDados(){
      
         testeMNIST = null;

@@ -11,7 +11,7 @@ public class RedeNeuraisMLP extends Application {
     
     @Override
     public void start(Stage stage) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("views/FXMLTelaPrincipal.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("views/Home.fxml"));
         
         Scene scene = new Scene(root);
         
