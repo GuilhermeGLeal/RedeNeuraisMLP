@@ -163,6 +163,22 @@ public class HomeController implements Initializable {
 
     @FXML
     private void abrir_arquivo(ActionEvent event) {
+        
+         /*
+         if(!ckbisTeste.isSelected()){
+            
+            projeto = new File("D:\\Downloads\\base_treinamento.csv");
+        }
+        else{
+             projeto = new File("D:\\Downloads\\base_teste.csv");
+        }
+   
+        control.AbrirArquivo(projeto.getPath(), projeto.getName());
+        txfCamadaEntrada.setText("" + control.getArq().getInputLayer());
+        txfCamadaOculta.setText("" + control.getArq().getHiddenLayer());
+        txfCamadaSaida.setText("" + control.getArq().getOutputLayer());
+        */ 
+       
         JFileChooser file = new JFileChooser();
         file.setFileSelectionMode(JFileChooser.FILES_ONLY);
         FileNameExtensionFilter filter = new FileNameExtensionFilter("CSV FILES", "csv", ".csv");
@@ -185,6 +201,8 @@ public class HomeController implements Initializable {
                 break;
             }
         }
+
+       
     }
 
     @FXML

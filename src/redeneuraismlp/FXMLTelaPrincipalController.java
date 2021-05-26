@@ -92,8 +92,7 @@ public class FXMLTelaPrincipalController implements Initializable {
         txfCamadaSaida.setText(""+0);
         txfCamadaOculta.setText(""+0);
         txfTaxaAprend.setText(""+0.1);
-        txfNumeroMaximo.setText(""+2000);
-        ckbLinear.setSelected(true);
+        txfNumeroMaximo.setText(""+2000);   
     }
     
     @FXML
@@ -107,7 +106,7 @@ public class FXMLTelaPrincipalController implements Initializable {
 
     @FXML
     private void abrir_arquivo(ActionEvent event) {
-          /*
+         
         if(!ckbisTeste.isSelected()){
             
             projeto = new File("D:\\Downloads\\base_treinamento.csv");
@@ -120,7 +119,7 @@ public class FXMLTelaPrincipalController implements Initializable {
         txfCamadaEntrada.setText("" + control.getArq().getInputLayer());
         txfCamadaOculta.setText("" + control.getArq().getHiddenLayer());
         txfCamadaSaida.setText("" + control.getArq().getOutputLayer());
-       */
+       /* 
         JFileChooser file = new JFileChooser();
         file.setFileSelectionMode(JFileChooser.FILES_ONLY);
         FileNameExtensionFilter filter = new FileNameExtensionFilter("CSV FILES", "csv", ".csv");
@@ -145,7 +144,7 @@ public class FXMLTelaPrincipalController implements Initializable {
             } else {
                 break;
             }
-        }
+        }*/
        
     }
 

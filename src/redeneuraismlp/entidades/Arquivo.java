@@ -110,7 +110,7 @@ public class Arquivo {
     public void lerArquivo() {
 
         String row;
-        String[][] data = new String[1500][1500];
+        String[][] data = new String[70500][800];
         String[] atributos = new String[790];
         String classe = "";
         LinhaCSV linha;
@@ -129,6 +129,8 @@ public class Arquivo {
 
                 atributos = preencheAtributos();
                 isminist = true;
+                
+                  row = csvReader.readLine();
             } else {
 
                 row = csvReader.readLine();
@@ -214,7 +216,7 @@ public class Arquivo {
         outputLayer = qtdClasses;
         this.hiddenLayer = (inputLayer + outputLayer) / 2;
         
-       // if(!isminist)
+        //if(!isminist)
             normalizar();
 
     }

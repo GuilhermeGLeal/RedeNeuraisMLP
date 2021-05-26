@@ -43,6 +43,17 @@ public class CalculoRedeNeural {
 
         this.saidaEsperada[posClasse] = 1;
 
+        /*
+        if(funcaoTrans == 3){
+            
+            for (int i = 0; i < classes.size(); i++) {
+                
+                if(posClasse != i){
+                    
+                     this.saidaEsperada[i] = -1;
+                }
+            }
+        }*/
     }
 
     private void calculaNeuronios() {
@@ -75,11 +86,8 @@ public class CalculoRedeNeural {
     }
 
     private double logistica(double net) {
-
-        double numeroEuler = 2.7182818284;
-        double pow = Math.pow(numeroEuler, -net);
-
-        return (1.0 / (1.0 + pow));
+                   
+        return (1.0 / (1.0 + Math.exp(-net)));
     }
 
     private double logisticaDerivada(double saida) {
@@ -89,10 +97,8 @@ public class CalculoRedeNeural {
 
     private double Hiperbolica(double net) {
 
-        double numeroEuler =  2.7182818284;
-        double pow =  Math.pow(numeroEuler, -(2.0 * net));
-
-        return  ((1.0 - pow) / (1.0 + pow));
+   
+        return Math.tanh(net);
     }
 
     private double HiperbolicaDerivada(double saida) {
@@ -196,7 +202,7 @@ public class CalculoRedeNeural {
             }
 
             saida = retornaSaida(netNeuronio);
-            retorno =   retornaGradiente(saida);
+            retorno =  retornaGradiente(saida);
             erro = (saidaEsperada[i] - saida) * retorno;
 
             if(erro == NaN)
