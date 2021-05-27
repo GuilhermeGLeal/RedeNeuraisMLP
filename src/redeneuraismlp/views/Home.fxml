@@ -42,8 +42,11 @@
                                     <Font name="System Bold" size="13.0" />
                                  </font>
                               </Label>
+                              <Label text="Camada de Entrada:" />
                               <TextField fx:id="txfCamadaEntrada" editable="false" promptText="Camada de Entrada" style="-fx-background-color: #dfdfdf;" />
+                              <Label text="Camada de Saída:" />
                               <TextField fx:id="txfCamadaSaida" editable="false" promptText="Camada de Saída" style="-fx-background-color: #dfdfdf;" />
+                              <Label text="Camada de Oculta:" />
                               <TextField fx:id="txfCamadaOculta" promptText="Camada Oculta" style="-fx-background-color: #dfdfdf;" />
                            </children>
                         </VBox>
@@ -54,8 +57,11 @@
                                     <Font name="System Bold" size="13.0" />
                                  </font>
                               </Label>
+                              <Label text="Valor do Erro:" />
                               <TextField fx:id="txfValorErro" promptText="Valor do Erro" style="-fx-background-color: #dfdfdf;" />
+                              <Label text="Máximo de Interaçõs:" />
                               <TextField fx:id="txfNumeroMaximo" promptText="Máximo de Interações" style="-fx-background-color: #dfdfdf;" />
+                              <Label text="Taxa de Aprendizagem:" />
                               <TextField fx:id="txfTaxaAprend" promptText="Taxa de Aprendizagem" style="-fx-background-color: #dfdfdf;" />
                            </children>
                         </VBox>
